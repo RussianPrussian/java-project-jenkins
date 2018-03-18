@@ -3,7 +3,7 @@ pipeline {
 		label 'Slave1'
 	}
 	options {
-		buildDiscarder(logRotator(numToKeepStr: '2', artifactsToKeepStr: '1'))
+		buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
 	}
 
 	stages {
