@@ -6,6 +6,7 @@
 	<property name="build.dir" location="bin"/>
 	<property name="dist.dir" location="dist"/>
 	<property name="docs.dir" location="docs"/>
+	<property name="report.dir" location="reports"/>
 	
 	<path id="class.path">
 		<pathelement location="./lib/junit-4.12.jar"/>
@@ -23,6 +24,7 @@
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${docs.dir}"/>
 		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${reports.dir}"/>
 	</target>
 
 	<target name="compile" depends="clean, makedir">
@@ -34,7 +36,7 @@
 	<target name="test" depends="clean, makedir, compile">
 		<junit printsummary="yes" fork="true">
 			<classpath refid="class.path" />
-			<test name="RectangleTest" todir="$reportdir" outfile="result">
+			<test name="RectangleTest" todir="${report.dir}" outfile="result">
 				<formatter type="xml" />
 			</test>
 		</junit>
