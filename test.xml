@@ -8,14 +8,15 @@
 	<property name="docs.dir" location="docs"/>
 	
 	<path id="class.path">
-		<pathelement location="./bin"/>
 		<pathelement location="./lib/junit-4.12.jar"/>
+		<pathelement location="${build.dir}"/>
 	</path>
 
 	<target name="clean">
 		<delete dir="${build.dir}"/>
 		<delete dir="${docs.dir}"/>
 		<delete dir="${dist.dir}"/>
+		<delete dir="${report.dir}"/>
 	</target>
 
 	<target name="makedir">
@@ -29,16 +30,17 @@
 			<classpath refid="class.path"/>
 		</javac>
 	</target>
-
-	<target name="jar" depends="compile">
-		<jar destfile="${dist.dir}\rectangle.jar" basedir="${build.dir}">
-			<manifest>
-				<attribute name="Main-Class" value="Rectangulator"/>
-			</manifest>
-		</jar>
+	
+	<target name="test" depends="clean, makedir, compile">
+		<junit printsummary="yes" fork="true">
+			<classpath refid="class.path" />
+			<test name="RectangleTest" todir="$reportdir" outfile="result">
+				<formatter type="xml" />
+			</test>
+		</junit>
 	</target>
 
-	<target name="main" depends="compile, jar">
+	<target name="main" depends="test">
 		<description>Main Target</description>
 	</target>
 	
