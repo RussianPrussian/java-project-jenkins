@@ -11,6 +11,7 @@ pipeline {
 			steps {
 				sh 'ant -f test.xml -v'
 				junit 'reports/result.xml'
+				sh 'cat reports/result.xml'
 			}
 
 		}
