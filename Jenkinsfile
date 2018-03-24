@@ -1,7 +1,5 @@
 pipeline {
-	agent {
-		label 'none'
-	}
+	agent none
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
 	}
@@ -16,7 +14,11 @@ pipeline {
 				junit 'reports/result.xml'
 				sh 'cat reports/result.xml'
 			}
-
+			post {
+				always {
+					archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
+				}
+			}
 		}
 		stage('build') {
 			agent {
@@ -45,9 +47,5 @@ pipeline {
 		}
 	}
 
-	post {
-		always {
-			archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
-		}
-	}
+	
 }
