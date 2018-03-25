@@ -52,8 +52,6 @@ pipeline {
 			agent  {
 				docker 'openjdk:8u162'
 			}
-			when {
-				branch development
 			steps {
 			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
 			  sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
