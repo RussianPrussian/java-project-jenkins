@@ -49,7 +49,7 @@ pipeline {
 				label 'master'
 			}
 			steps {
-			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.{env.BUILD_NUMBER}.jar"
+			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
 			  sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4"
 			}
 		}
@@ -92,7 +92,7 @@ pipeline {
 				echo "Pushing to Origin master"
 				sh "git push origin master"
 				echo "Tagging the release"
-				sh "git tag rectangle-${env.MAJOR_VERSION}.${BUILD_NUMBER}"
+				sh "git tag rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
 			}
 		}
 	}
