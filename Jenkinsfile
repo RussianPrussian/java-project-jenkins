@@ -109,17 +109,15 @@ pipeline {
 				}
 			}
 		}
-		post{
-			failure {
-				emailext(
-					subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!",
-					body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] failed.
-					Go to <a href=&QUOT;${env.BUILD_URL}&QUOT;>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a> for more details</p>",
-					to: "alexander.katsen@gmail.com"
-				)
-			}
+	}
+	post{
+		failure {
+			emailext(
+				subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!",
+				body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] failed.
+				Go to <a href=&QUOT;${env.BUILD_URL}&QUOT;>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a> for more details</p>",
+				to: "alexander.katsen@gmail.com"
+			)
 		}
 	}
-
-
 }
