@@ -85,6 +85,8 @@ pipeline {
 				sh "git stash"
 				echo "Checking out development"
 				sh "git checkout development"
+				echo "Doing git pull"
+				sh "git pull origin development"
 				echo "Checking out master branch"
 				sh "git checkout master"
 				echo "pulling remote master"
