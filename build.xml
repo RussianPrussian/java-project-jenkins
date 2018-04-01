@@ -6,7 +6,7 @@
 	<property name="build.dir" location="bin"/>
 	<property name="dist.dir" location="dist"/>
 	<property name="docs.dir" location="docs"/>
-	
+
 	<path id="class.path">
 		<pathelement location="./bin"/>
 		<pathelement location="./lib/junit-4.12.jar"/>
@@ -31,7 +31,7 @@
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar destfile="${dist.dir}\rectangle_${env.BUILD_NUMBER}.jar" basedir="${build.dir}">
+		<jar destfile="${dist.dir}\rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar" basedir="${build.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="Rectangulator"/>
 			</manifest>
@@ -41,5 +41,5 @@
 	<target name="main" depends="compile, jar">
 		<description>Main Target</description>
 	</target>
-	
+
 </project>

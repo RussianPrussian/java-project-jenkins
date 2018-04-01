@@ -1,7 +1,12 @@
 pipeline {
 	agent none
+
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
+	}
+
+	environment {
+		MAJOR_VERSION = 1
 	}
 
 	stages {
@@ -23,7 +28,7 @@ pipeline {
 			steps {
 				sh 'ant -f build.xml -v'
 			}
-			
+
 			post {
 				success {
 					archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
@@ -36,7 +41,7 @@ pipeline {
 			}
 			steps {
 				sh "mkdir -p /var/www/html/rectangles/all/${env.BRANCH_NAME}"
-				sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}"
+				sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}"
 			}
 		}
 		stage('Running on Centos') {
@@ -44,8 +49,8 @@ pipeline {
 				label 'master'
 			}
 			steps {
-			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-			  sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
+			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.{env.BUILD_NUMBER}.jar"
+			  sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4"
 			}
 		}
 		stage("Test on Debian") {
@@ -53,9 +58,9 @@ pipeline {
 				docker 'openjdk:8u162'
 			}
 			steps {
-			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-			  sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
-			} 
+			  sh "wget http://russianprussian1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+			  sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4"
+			}
 		}
 		stage("Promote to Green") {
 			agent {
@@ -65,7 +70,7 @@ pipeline {
 				branch 'master'
 			}
 			steps {
-				sh "cp /var/www/html/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+				sh "cp /var/www/html/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
 			}
 		}
 		stage('Promote Development branch to Master') {
@@ -84,11 +89,13 @@ pipeline {
 				sh "git checkout master"
 				echo "merging development into master branch"
 				sh "git merge development"
-				echo "Purshing to Origin master"
+				echo "Pushing to Origin master"
 				sh "git push origin master"
+				echo "Tagging the release"
+				sh "git tag rectangle-${env.MAJOR_VERSION}.${BUILD_NUMBER}"
 			}
-		}		
+		}
 	}
 
-	
+
 }
