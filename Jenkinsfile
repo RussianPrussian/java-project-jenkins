@@ -98,6 +98,26 @@ pipeline {
 				echo "Tagging the release"
 				sh "git tag rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
 			}
+			post{
+				success {
+					emailext(
+						subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] succeeded!",
+						body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] succeeded. Go
+						to <a href=&QUOT;${env.BUILD_URL}&QUOT;>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a> for more details</p>",
+						to: "alexander.katsen@gmail.com"
+					)
+				}
+			}
+		}
+		post{
+			failure {
+				emailext(
+					subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] failed!",
+					body: "<p>${env.JOB_NAME} [${env.BUILD_NUMBER}] failed.
+					Go to <a href=&QUOT;${env.BUILD_URL}&QUOT;>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a> for more details</p>",
+					to: "alexander.katsen@gmail.com"
+				)
+			}
 		}
 	}
 
