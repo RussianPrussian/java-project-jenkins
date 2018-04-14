@@ -23,7 +23,7 @@ pipeline {
 				echo "Workspace: ${env.WORKSPACE}"
 				script {
 					def myLib = new linuxacademy.git.gitStuff();
-					echo "My commit is ${myLib.gitCommit('${env.WORKSPACE}/.git')}"
+					echo "My commit is ${myLib.gitCommit("${env.WORKSPACE}/.git")}"
 				}
 			}
 
