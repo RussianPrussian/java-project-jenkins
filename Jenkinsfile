@@ -22,7 +22,7 @@ pipeline {
 				echo "My Branch: ${env.BRANCH_NAME}"
 			}
 			script {
-				def myLib = new linuxacademy.gitStuff();
+				def myLib = new linuxacademy.git.gitStuff();
 				echo "My commit is ${myLib("${env.WORKSPACE}/.git")}"
 			}
 		}
