@@ -20,9 +20,10 @@ pipeline {
 			agent any
 			steps {
 				echo "My Branch: ${env.BRANCH_NAME}"
+				echo "Workspace: ${env.WORKSPACE}"
 				script {
 					def myLib = new linuxacademy.git.gitStuff();
-				
+					echo "My commit is ${myLib('${env.WORKSPACE}/.git')}"
 				}
 			}
 
