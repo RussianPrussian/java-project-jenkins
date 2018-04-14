@@ -20,11 +20,12 @@ pipeline {
 			agent any
 			steps {
 				echo "My Branch: ${env.BRANCH_NAME}"
+				script {
+					def myLib = new linuxacademy.git.gitStuff();
+					echo "My commit is ${myLib("${env.WORKSPACE}/.git")}"
+				}
 			}
-			script {
-				def myLib = new linuxacademy.git.gitStuff();
-				echo "My commit is ${myLib("${env.WORKSPACE}/.git")}"
-			}
+
 		}
 		stage('Unit Tests') {
 			agent {
